@@ -1,4 +1,4 @@
-package webctx
+package ctx
 
 import (
 	"github.com/auth0/go-jwt-middleware"

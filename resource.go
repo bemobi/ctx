@@ -1,4 +1,4 @@
-package webctx
+package ctx
 
 import "net/http"
 

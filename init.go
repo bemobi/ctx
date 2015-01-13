@@ -1,4 +1,4 @@
-package webctx
+package ctx
 
 import (
 	"net/http"
@@ -13,7 +13,7 @@ func Init(router *mux.Router, privKey, pubKey string, vars map[string]interface{
 	LoadSecureKeys(privKey, pubKey)
 
 	// create and configure a new context
-	ctx := &Context{
+	context := &Context{
 		Router: router,
 		Vars:   vars,
 
@@ -26,13 +26,13 @@ func Init(router *mux.Router, privKey, pubKey string, vars map[string]interface{
 
 	// add the registered endpoints
 	for _, endpoint := range endpoints {
-		httpHandler := newContextHandler(ctx, endpoint)
+		httpHandler := newContextHandler(context, endpoint)
 		if endpoint.Public {
-			ctx.Router.HandleFunc(endpoint.Path, httpHandler)
+			context.Router.HandleFunc(endpoint.Path, httpHandler)
 		} else {
-			ctx.Router.Handle(
+			context.Router.Handle(
 				endpoint.Path, negroni.New(
-					negroni.HandlerFunc(ctx.middleware.HandlerWithNext),
+					negroni.HandlerFunc(context.middleware.HandlerWithNext),
 					negroni.Wrap(http.HandlerFunc(httpHandler)),
 				),
 			)

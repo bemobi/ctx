@@ -1,4 +1,4 @@
-package webctx
+package ctx
 
 var endpoints = []*Endpoint{}
 
