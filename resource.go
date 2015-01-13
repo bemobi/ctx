@@ -39,11 +39,3 @@ func Resource(path string, res interface{}, public bool) {
 
 	Register(&Endpoint{Path: path, Public: public, Handlers: handlers})
 }
-
-func (e *Endpoint) GET(handler ContextHandler) *Endpoint { e.Handlers["GET"] = handler; return e }
-
-func (e *Endpoint) POST(handler ContextHandler) *Endpoint { e.Handlers["POST"] = handler; return e }
-
-func (e *Endpoint) PUT(handler ContextHandler) *Endpoint { e.Handlers["PUT"] = handler; return e }
-
-func (e *Endpoint) DELETE(handler ContextHandler) *Endpoint { e.Handlers["DELETE"] = handler; return e }
