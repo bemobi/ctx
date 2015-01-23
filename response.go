@@ -50,3 +50,7 @@ func BadRequest(rw http.ResponseWriter, message string, args ...interface{}) err
 func InternalServerError(rw http.ResponseWriter, message string, args ...interface{}) error {
 	return Errorf(rw, http.StatusInternalServerError, message, args...)
 }
+
+func NotFound(rw http.ResponseWriter, message string, args ...interface{}) error {
+	return Errorf(rw, http.StatusNotFound, message, args...)
+}
