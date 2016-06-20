@@ -3,7 +3,7 @@ package ctx
 import (
 	"net/http"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/dgrijalva/jwt-go/request"
 	"github.com/nicksnyder/go-i18n/i18n"
 )
 
@@ -22,8 +22,8 @@ func newContextHandler(context *Context, endpoint *Endpoint) http.HandlerFunc {
 
 		// extract the token, if the endpoint is private
 		if !endpoint.Public {
-			context.Token, _ = jwt.ParseFromRequest(
-				req, context.middleware.Options.ValidationKeyGetter,
+			context.Token, _ = request.ParseFromRequest(
+				req, request.HeaderExtractor{}, context.middleware.Options.ValidationKeyGetter,
 			)
 		}
 
