@@ -23,7 +23,9 @@ func newContextHandler(context *Context, endpoint *Endpoint) http.HandlerFunc {
 		// extract the token, if the endpoint is private
 		if !endpoint.Public {
 			context.Token, _ = request.ParseFromRequest(
-				req, request.HeaderExtractor{}, context.middleware.Options.ValidationKeyGetter,
+				req,
+				request.HeaderExtractor{},
+				context.middleware.Options.ValidationKeyGetter,
 			)
 		}
 

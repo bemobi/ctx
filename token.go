@@ -1,6 +1,7 @@
 package ctx
 
 import (
+	"crypto/rsa"
 	"fmt"
 	"io/ioutil"
 
@@ -8,8 +9,8 @@ import (
 )
 
 var (
-	verifyKey []byte
-	signKey   []byte
+	verifyKey *rsa.PublicKey
+	signKey   *rsa.PrivateKey
 )
 
 func SignToken(token *jwt.Token) (string, error) {
@@ -17,13 +18,26 @@ func SignToken(token *jwt.Token) (string, error) {
 }
 
 func LoadSecureKeys(privateKeyPath, publicKeyPath string) (err error) {
-	signKey, err = ioutil.ReadFile(privateKeyPath)
+	bytesSignKey, err := ioutil.ReadFile(privateKeyPath)
 	if err != nil {
 		return fmt.Errorf("Error reading private key")
 	}
-	verifyKey, err = ioutil.ReadFile(publicKeyPath)
+	signKey, err = jwt.ParseRSAPrivateKeyFromPEM(bytesSignKey)
+	if err != nil {
+		return fmt.Errorf("error parsing RSA private key: %s", err)
+	}
+
+	bytesVerifyKey, err := ioutil.ReadFile(publicKeyPath)
 	if err != nil {
 		return fmt.Errorf("Error reading public key")
+	}
+	verifyKey, err = jwt.ParseRSAPublicKeyFromPEM(bytesVerifyKey)
+	if err != nil {
+		return fmt.Errorf("error parsing RSA private key: %s", err)
+	}
+
+	if err != nil {
+		return fmt.Errorf("error parsing RSA public key: %s", err)
 	}
 	return nil
 }
