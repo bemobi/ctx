@@ -24,7 +24,7 @@ func newContextHandler(context *Context, endpoint *Endpoint) http.HandlerFunc {
 		if !endpoint.Public {
 			context.Token, _ = request.ParseFromRequest(
 				req,
-				request.HeaderExtractor{},
+				request.AuthorizationHeaderExtractor,
 				context.middleware.Options.ValidationKeyGetter,
 			)
 		}
